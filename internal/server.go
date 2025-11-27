@@ -14,8 +14,9 @@ func NewServer(httpHandler Handler) *Server {
 	return &Server{}
 }
 
-func (s *Server) Run() error {
+func (s *Server) Run(port string) error {
 
+	p := ":" + port
 	router := mux.NewRouter()
 
 	router.Path("/task").Methods("/POST").HandlerFunc(s.handler.HandleAddTask)
@@ -26,5 +27,5 @@ func (s *Server) Run() error {
 	router.Path("/task").Queries("status", "true").Methods("/GET").HandlerFunc(s.handler.HandleShowComplietedTask)
 	router.Path("/task/{title}").Methods("/DELETE").HandlerFunc(s.handler.HandleDeleteTask)
 
-	return http.ListenAndServe(":9091", router)
+	return http.ListenAndServe(p, router)
 }
